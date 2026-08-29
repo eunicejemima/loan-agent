@@ -99,10 +99,10 @@ loan-agent/
 
 ## Setup
 
-1. Open PowerShell in the project folder.
+1. Open PowerShell in the project’s root folder, then move into the backend folder.
 
    ```powershell
-   cd 'C:\Users\George Rex\OneDrive\Desktop\loan-agent\backend'
+   cd backend
    ```
 
 2. Install the backend dependencies.
@@ -165,4 +165,5 @@ The root `.gitignore` excludes `.env` and `.env.*` while allowing a future `.env
 - Support multilingual explanations selected from the interface.
 - Add authentication, secure storage policies, audit logs, and production-grade upload controls.
 - Improve financial modelling for lender-specific charges, amortisation schedules, and penalty scenarios.
+
 
