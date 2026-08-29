@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Loan Agent &mdash; AI Loan Auditor & Live Indian Bank Rates</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css" />
+  
+  <!-- Lucide Icons & Chart.js -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <div class="brand">
+        <div class="brand-logo">₹</div>
+        <div class="brand-text">
+          <h1>Loan Agent</h1>
+          <p>AI Loan Auditor & Live Bank Comparator</p>
+        </div>
+      </div>
+      <div class="nav-actions">
+        <div class="backend-status">
+          <div id="statusDot" class="status-dot"></div>
+          <span id="statusLabel">Checking backend...</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Live Indian Banking Benchmark Ticker -->
+  <div class="live-ticker-bar">
+    <div class="container ticker-content">
+      <div class="ticker-left">
+        <span class="pulse-badge">
+          <span class="pulse-dot"></span>
+          LIVE RATES
+        </span>
+        <span>RBI Repo Benchmark: <strong id="tickerRbiRate" style="color: var(--accent-emerald);">6.50%</strong></span>
+        <span>&bull;</span>
+        <span>Tracking: <strong id="tickerBankCount" style="color: var(--text-primary);">12 Banks & Schemes</strong> (SBI, HDFC, ICICI, PNB, Mudra)</span>
+      </div>
+      <div>
+        <button id="btnOpenRatesModal" class="btn-link">
+          <i data-lucide="external-link" style="width: 12px; height: 12px; vertical-align: middle;"></i>
+          Explore All Live Bank Rates
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Container -->
+  <main class="container">
+    
+    <!-- Hero Header -->
+    <header class="hero">
+      <div class="hero-badge">
+        <i data-lucide="shield-check" style="width: 14px; height: 14px;"></i>
+        <span>Borrower Protection & Live Bank Rate Intelligence</span>
+      </div>
+      <h2>Smart Loan Protection & Best Bank Finder</h2>
+      <p>
+        Audit your loan agreement to detect hidden flat-rate traps & predatory red flags, 
+        or search live lending rates across top Indian banks to find the cheapest EMI.
+      </p>
+    </header>
+
+    <!-- Main Mode Switcher -->
+    <div class="mode-switcher-container">
+      <div class="mode-switcher">
+        <button id="btnModeAudit" class="mode-btn active">
+          <i data-lucide="file-search" style="width: 18px; height: 18px;"></i>
+          Audit Loan Agreement
+        </button>
+        <button id="btnModeSearch" class="mode-btn">
+          <i data-lucide="calculator" style="width: 18px; height: 18px;"></i>
+          Find Loans by Amount
+        </button>
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- VIEW 1: LOAN DOCUMENT AUDIT MODE                                          -->
+    <!-- ========================================================================= -->
+    <section id="viewAudit" class="view-section active">
+      
+      <!-- Ingestion & Upload Section -->
+      <section class="ingestion-section card">
+        <div class="upload-tabs">
+          <button id="tabUpload" class="tab-btn active">
+            <i data-lucide="upload-cloud" style="width: 18px; height: 18px;"></i>
+            Upload Document (PDF / TXT)
+          </button>
+          <button id="tabText" class="tab-btn">
+            <i data-lucide="file-text" style="width: 18px; height: 18px;"></i>
+            Paste Agreement Text
+          </button>
+        </div>
+
+        <!-- Tab 1: File Upload -->
+        <div id="uploadWrapper">
+          <input type="file" id="fileInput" accept=".pdf,.txt,application/pdf,text/plain" style="display: none;" />
+          
+          <div id="dropzone" class="dropzone">
+            <div class="dropzone-icon">
+              <i data-lucide="file-up"></i>
+            </div>
+            <div class="dropzone-text">
+              <h3>Drag and drop your loan agreement here</h3>
+              <p>or click to browse from your computer</p>
+              <span class="file-specs">Supports PDF & Plain Text documents</span>
+            </div>
+          </div>
+
+          <!-- Selected File Banner -->
+          <div id="selectedFileBanner" class="selected-file-banner">
+            <div class="file-info">
+              <div class="file-icon">
+                <i data-lucide="file-check"></i>
+              </div>
+              <div class="file-details">
+                <h4 id="selectedFileName">filename.pdf</h4>
+                <span id="selectedFileSize">0 KB</span>
+              </div>
+            </div>
+            <button id="btnRemoveFile" class="btn-remove-file" title="Remove file">
+              <i data-lucide="trash-2"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Tab 2: Text Area Input -->
+        <div id="textWrapper" class="text-input-wrapper">
+          <textarea id="loanTextInput" class="loan-textarea" placeholder="Paste the full text of your loan agreement, sanction letter, or key terms here..."></textarea>
+        </div>
+
+        <!-- Action Row -->
+        <div class="action-row">
+          <div style="font-size: 0.85rem; color: var(--text-muted);">
+            <i data-lucide="lock" style="width: 14px; height: 14px; vertical-align: middle;"></i>
+            Privacy assured: Financial terms extracted securely
+          </div>
+          <button id="analyzeBtn" class="btn btn-primary">
+            <i data-lucide="sparkles" style="width: 18px; height: 18px;"></i>
+            Analyze Agreement Now
+          </button>
+        </div>
+
+        <!-- 1-Click Samples for Testing -->
+        <div class="samples-wrapper">
+          <div class="samples-header">
+            <i data-lucide="play-circle" style="width: 16px; height: 16px;"></i>
+            <span>Or test immediately with 1-click sample agreements:</span>
+          </div>
+          <div id="sampleButtonsContainer" class="sample-buttons">
+            <!-- Populated by samples.js -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Multi-step Loading Card -->
+      <div id="loadingCard" class="loading-card">
+        <div class="spinner"></div>
+        <h3 id="loadingMessage" style="font-size: 1.25rem; font-weight: 700; margin-bottom: 8px;">Analyzing document...</h3>
+        <p style="color: var(--text-secondary); font-size: 0.9rem;">
+          Extracting terms with Gemini AI and calculating True Effective APR...
+        </p>
+        <div class="stepper">
+          <div id="step-1" class="step-item active">
+            <div class="step-dot"></div>
+            <span>1. Ingesting Text</span>
+          </div>
+          <div id="step-2" class="step-item">
+            <div class="step-dot"></div>
+            <span>2. Gemini Extraction</span>
+          </div>
+          <div id="step-3" class="step-item">
+            <div class="step-dot"></div>
+            <span>3. Financial Math & Red Flags</span>
+          </div>
+          <div id="step-4" class="step-item">
+            <div class="step-dot"></div>
+            <span>4. Live Bank Alternatives</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Full Results Dashboard -->
+      <section id="resultsContainer" class="results-container">
+        
+        <!-- Executive Verdict Banner -->
+        <div id="verdictBanner" class="verdict-banner">
+          <div id="verdictIcon" class="verdict-icon">🚨</div>
+          <div class="verdict-content">
+            <h3 id="verdictTitle">High Risk Loan Detected</h3>
+            <p id="verdictDesc">Summary of findings will appear here.</p>
+          </div>
+        </div>
+
+        <!-- AI Plain Language Explanation Card -->
+        <div class="ai-explanation-card">
+          <div class="ai-header">
+            <div class="ai-title">
+              <i data-lucide="bot"></i>
+              <span>AI Plain-Language Breakdown</span>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button id="btnSpeakExplanation" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8rem;">
+                <i data-lucide="volume-2" style="width: 14px; height: 14px;"></i>
+                Listen
+              </button>
+              <button id="btnCopyExplanation" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8rem;">
+                <i data-lucide="copy" style="width: 14px; height: 14px;"></i>
+                Copy
+              </button>
+            </div>
+          </div>
+          <div id="aiExplanationBody" class="ai-body">
+            <!-- AI explanation text -->
+          </div>
+        </div>
+
+        <!-- Top Row: Quoted vs Real APR + Cost Chart -->
+        <div class="grid-2">
+          
+          <!-- APR Truth Comparison Card -->
+          <div class="card apr-comparison-card">
+            <div class="section-title">
+              <i data-lucide="percent" style="color: var(--accent-primary);"></i>
+              <span>The APR Truth Meter</span>
+            </div>
+            
+            <div class="apr-meter-wrapper">
+              <div class="rate-box">
+                <h4 id="quotedTypeDisplay">Quoted Flat Rate</h4>
+                <div id="quotedRateDisplay" class="rate-value quoted">12.0%</div>
+              </div>
+              <div class="rate-arrow">➔</div>
+              <div class="rate-box">
+                <h4>Real Effective APR</h4>
+                <div id="realAprDisplay" class="rate-value real">21.8%</div>
+              </div>
+            </div>
+
+            <div id="aprGapBadge" class="apr-gap-badge">
+              ⚠️ +9.8% Hidden Interest Rate Gap
+            </div>
+          </div>
+
+          <!-- Cost Breakdown Chart -->
+          <div class="card chart-card">
+            <div class="section-title">
+              <i data-lucide="pie-chart" style="color: var(--accent-primary);"></i>
+              <span>Total Repayment Composition</span>
+            </div>
+            <div class="chart-container">
+              <canvas id="costChart"></canvas>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Stat Cards Grid -->
+        <div class="grid-3">
+          <div class="stat-card">
+            <div class="stat-label"><i data-lucide="wallet"></i> Principal Amount</div>
+            <div id="statPrincipal" class="stat-value">₹0</div>
+            <div class="stat-sub">Actual amount disbursed</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label"><i data-lucide="calendar"></i> Loan Tenure</div>
+            <div id="statTenure" class="stat-value">0 Months</div>
+            <div class="stat-sub">Repayment duration</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label"><i data-lucide="credit-card"></i> Monthly EMI</div>
+            <div id="statEmi" class="stat-value">₹0</div>
+            <div class="stat-sub">Monthly installment</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label"><i data-lucide="trending-up"></i> Total Interest</div>
+            <div id="statTotalInterest" class="stat-value">₹0</div>
+            <div class="stat-sub">Interest cost over tenure</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label"><i data-lucide="tag"></i> Processing & Fees</div>
+            <div id="statTotalFees" class="stat-value">₹0</div>
+            <div class="stat-sub">Upfront fees + Insurance</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label"><i data-lucide="receipt"></i> Total Cost of Loan</div>
+            <div id="statTotalCost" class="stat-value">₹0</div>
+            <div class="stat-sub">Principal + Interest + All Fees</div>
+          </div>
+        </div>
+
+        <!-- Red Flags & Predatory Clauses -->
+        <div class="card red-flags-card">
+          <div class="section-title" style="justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <i data-lucide="flag" style="color: var(--accent-rose);"></i>
+              <span>Predatory Clause & Red Flag Audit</span>
+            </div>
+            <span id="redFlagCountBadge" class="sample-badge trap">0 Flagged</span>
+          </div>
+          <div id="redFlagsList" class="flag-list">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Fair Live Bank Alternatives Section -->
+        <div class="card alternatives-section">
+          <div class="section-title">
+            <i data-lucide="layers" style="color: var(--accent-emerald);"></i>
+            <span>Cheaper Live Bank Alternatives (RBI Benchmarked)</span>
+          </div>
+          <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 16px;">
+            Based on your sanctioned amount, here are live regulated bank and government schemes with lower APRs:
+          </p>
+          <div id="alternativesGrid" class="alt-grid">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Extracted Terms Accordion -->
+        <div class="accordion">
+          <div id="accordionHeader" class="accordion-header">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <i data-lucide="code-2" style="color: var(--accent-cyan);"></i>
+              <span>View Extracted Terms & System Parameters</span>
+            </div>
+            <i id="accordionIcon" data-lucide="chevron-down"></i>
+          </div>
+          <div id="accordionBody" class="accordion-body">
+            <div id="termsGrid" class="terms-grid">
+              <!-- Populated dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="results-toolbar">
+          <button id="btnPrintReport" class="btn btn-secondary">
+            <i data-lucide="printer"></i>
+            Print / Save PDF Report
+          </button>
+        </div>
+
+      </section>
+
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- VIEW 2: SEARCH LOANS BY SPECIFIC AMOUNT (LIVE BANK FINDER)                -->
+    <!-- ========================================================================= -->
+    <section id="viewSearch" class="view-section">
+      
+      <div class="card search-form-card">
+        <div class="section-title">
+          <i data-lucide="search" style="color: var(--accent-primary);"></i>
+          <span>Search & Compare Live Bank Loans by Amount</span>
+        </div>
+        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 20px;">
+          Enter how much money you need to compare live interest rates, exact EMIs, and processing fees across top Indian banks (SBI, PNB, BOB, HDFC, ICICI, Canara, Mudra).
+        </p>
+
+        <!-- 1. Amount Input -->
+        <div class="form-group">
+          <label class="form-label">
+            <span>Loan Amount Needed (₹)</span>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Min: ₹5,000 &bull; Max: ₹1 Crore</span>
+          </label>
+          <div class="amount-input-wrapper">
+            <span class="currency-prefix">₹</span>
+            <input type="number" id="searchAmountInput" class="amount-input" value="300000" step="10000" min="5000" placeholder="e.g. 300000" />
+          </div>
+          <div class="quick-amount-pills">
+            <button type="button" class="pill-btn" data-amount="50000">₹50,000 (Mudra Shishu)</button>
+            <button type="button" class="pill-btn" data-amount="100000">₹1 Lakh</button>
+            <button type="button" class="pill-btn active" data-amount="300000">₹3 Lakhs</button>
+            <button type="button" class="pill-btn" data-amount="500000">₹5 Lakhs (Mudra Kishor)</button>
+            <button type="button" class="pill-btn" data-amount="1000000">₹10 Lakhs (Mudra Tarun)</button>
+            <button type="button" class="pill-btn" data-amount="2500000">₹25 Lakhs</button>
+          </div>
+        </div>
+
+        <!-- 2. Category Selector -->
+        <div class="form-group">
+          <label class="form-label">Loan Purpose / Category</label>
+          <div class="category-selector-grid">
+            <div class="category-card active" data-category="all">
+              <div class="cat-icon">🌐</div>
+              <div class="cat-name">All Banks</div>
+            </div>
+            <div class="category-card" data-category="msme">
+              <div class="cat-icon">💼</div>
+              <div class="cat-name">Small Business (MSME)</div>
+            </div>
+            <div class="category-card" data-category="mudra">
+              <div class="cat-icon">🏛️</div>
+              <div class="cat-name">MUDRA / Govt Scheme</div>
+            </div>
+            <div class="category-card" data-category="personal">
+              <div class="cat-icon">👤</div>
+              <div class="cat-name">Personal / Salaried</div>
+            </div>
+            <div class="category-card" data-category="gold">
+              <div class="cat-icon">💰</div>
+              <div class="cat-name">Gold Loan</div>
+            </div>
+            <div class="category-card" data-category="agriculture">
+              <div class="cat-icon">🌾</div>
+              <div class="cat-name">Agriculture / KCC</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Tenure Selector -->
+        <div class="form-group">
+          <label class="form-label">Repayment Tenure</label>
+          <div class="tenure-pills">
+            <button type="button" class="pill-btn" data-tenure="12">12 Months (1 yr)</button>
+            <button type="button" class="pill-btn" data-tenure="24">24 Months (2 yrs)</button>
+            <button type="button" class="pill-btn active" data-tenure="36">36 Months (3 yrs)</button>
+            <button type="button" class="pill-btn" data-tenure="48">48 Months (4 yrs)</button>
+            <button type="button" class="pill-btn" data-tenure="60">60 Months (5 yrs)</button>
+            <button type="button" class="pill-btn" data-tenure="84">84 Months (7 yrs)</button>
+          </div>
+        </div>
+
+        <!-- Action Button -->
+        <div style="margin-top: 24px;">
+          <button id="btnExecuteSearch" class="btn btn-primary" style="width: 100%; padding: 14px; font-size: 1.05rem;">
+            <i data-lucide="sparkles"></i>
+            Compare Live Bank Rates & Calculate EMIs
+          </button>
+        </div>
+      </div>
+
+      <!-- Live Search Results Grid -->
+      <section id="searchResultsSection" class="search-results-section">
+        <div class="results-header-bar">
+          <p id="searchSummaryText" style="font-size: 1rem; color: var(--text-primary);">
+            Showing live bank offers:
+          </p>
+        </div>
+
+        <div id="bankOffersGrid" class="bank-offers-grid">
+          <!-- Populated by search results -->
+        </div>
+      </section>
+
+    </section>
+
+  </main>
+
+  <!-- Live Bank Rates Explorer Modal -->
+  <div id="ratesModal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>
+          <i data-lucide="landmark" style="color: var(--accent-primary);"></i>
+          Live Indian Bank Lending Rates Matrix
+        </h3>
+        <button id="btnCloseRatesModal" class="modal-close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="margin-bottom: 16px; font-size: 0.85rem; color: var(--text-secondary); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+          <span>Current RBI Benchmark Repo Rate: <strong id="modalRepoRate" style="color: var(--accent-emerald);">6.50%</strong></span>
+          <span>Last Updated: <strong id="modalLastUpdate">Today</strong></span>
+        </div>
+        <div style="overflow-x: auto;">
+          <table class="rates-table">
+            <thead>
+              <tr>
+                <th>Bank & Scheme</th>
+                <th>Category</th>
+                <th>Live APR</th>
+                <th>Benchmark Link</th>
+                <th>Processing Fee</th>
+                <th>Prepayment Fee</th>
+                <th>Amount Range</th>
+              </tr>
+            </thead>
+            <tbody id="ratesTableBody">
+              <!-- Populated by rates modal -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Toast Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="js/samples.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>

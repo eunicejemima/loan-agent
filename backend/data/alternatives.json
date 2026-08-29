@@ -1,0 +1,82 @@
+[
+  {
+    "name": "PMMY / MUDRA - Shishu",
+    "type": "Government Scheme",
+    "minAmount": 0,
+    "maxAmount": 50000,
+    "purpose": ["business", "working capital"],
+    "typicalAnnualRatePct": 10,
+    "processingFeePct": 0,
+    "notes": "No collateral required. Aimed at very small/starting businesses."
+  },
+  {
+    "name": "PMMY / MUDRA - Kishor",
+    "type": "Government Scheme",
+    "minAmount": 50000,
+    "maxAmount": 500000,
+    "purpose": ["business", "working capital", "equipment"],
+    "typicalAnnualRatePct": 11,
+    "processingFeePct": 0,
+    "notes": "No collateral required. For businesses with some track record."
+  },
+  {
+    "name": "PMMY / MUDRA - Tarun",
+    "type": "Government Scheme",
+    "minAmount": 500000,
+    "maxAmount": 1000000,
+    "purpose": ["business", "expansion", "equipment"],
+    "typicalAnnualRatePct": 12,
+    "processingFeePct": 0.5,
+    "notes": "No collateral required. For established small businesses."
+  },
+  {
+    "name": "Typical Public Bank MSME Loan",
+    "type": "Bank",
+    "minAmount": 100000,
+    "maxAmount": 2000000,
+    "purpose": ["business", "working capital", "equipment", "expansion"],
+    "typicalAnnualRatePct": 14,
+    "processingFeePct": 1,
+    "notes": "Requires basic documentation and credit history; rates vary by bank and borrower profile."
+  },
+  {
+    "name": "Typical Private Bank Personal Loan",
+    "type": "Bank",
+    "minAmount": 50000,
+    "maxAmount": 1500000,
+    "purpose": ["personal", "medical", "education", "other"],
+    "typicalAnnualRatePct": 16,
+    "processingFeePct": 2,
+    "notes": "Faster approval, higher rate than government schemes."
+  },
+  {
+    "name": "Typical Registered NBFC Loan",
+    "type": "NBFC",
+    "minAmount": 25000,
+    "maxAmount": 500000,
+    "purpose": ["personal", "business", "other"],
+    "typicalAnnualRatePct": 22,
+    "processingFeePct": 2.5,
+    "notes": "RBI-registered NBFC-MFI rate range; still significantly better than unregulated lenders."
+  },
+  {
+    "name": "Stand-Up India Scheme",
+    "type": "Government Scheme",
+    "minAmount": 1000000,
+    "maxAmount": 10000000,
+    "purpose": ["business", "expansion"],
+    "typicalAnnualRatePct": 13,
+    "processingFeePct": 0.5,
+    "notes": "For SC/ST and women entrepreneurs setting up greenfield enterprises."
+  },
+  {
+    "name": "Kisan Credit Card (KCC)",
+    "type": "Government Scheme",
+    "minAmount": 10000,
+    "maxAmount": 300000,
+    "purpose": ["agriculture", "farming"],
+    "typicalAnnualRatePct": 7,
+    "processingFeePct": 0,
+    "notes": "Subsidized rate for farmers; interest subvention may apply for prompt repayment."
+  }
+]
