@@ -4,7 +4,7 @@
  * Manages all communication with the Loan Agent Express backend.
  */
 
-const API_BASE_URL = "http://localhost:3001";
+const API_BASE_URL = "https://loan-agent-backend.onrender.com";
 
 const ApiService = {
   baseUrl: API_BASE_URL,
