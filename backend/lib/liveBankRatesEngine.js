@@ -703,7 +703,7 @@ function getLiveBankRatesData() {
   return {
     rbiRepoRate: RBI_REPO_RATE,
     lastUpdated: formattedDate,
-    status: "LIVE",
+    status: "VERIFIED",
     totalBanksCovered: LIVE_BANK_RATES.length,
     rates: LIVE_BANK_RATES.map((bank) => ({
       ...bank,
