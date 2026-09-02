@@ -151,7 +151,7 @@ const UI = {
       banner.className = "verdict-banner danger";
       icon.textContent = "🚨";
       title.textContent = "High Risk Loan Detected — Hidden Costs & Regulatory Flags";
-      desc.textContent = `This agreement has an effective APR of ${loanAnalysis.effectiveAnnualAPR}% (vs quoted ${loanAnalysis.quotedRatePct}% ${loanAnalysis.quotedRateType}) along with ${redFlags.length} flagged risk items. Review live bank alternatives before signing.`;
+      desc.textContent = `This agreement has an effective APR of ${loanAnalysis.effectiveAnnualAPR}% (vs quoted ${loanAnalysis.quotedRatePct}% ${loanAnalysis.quotedRateType}) along with ${redFlags.length} flagged risk items. Review verified bank alternatives before signing.`;
     } else if (hasMedFlag || aprGap > 1.5) {
       banner.className = "verdict-banner warning";
       icon.textContent = "⚠️";
@@ -383,7 +383,7 @@ const UI = {
           <div class="alt-type">${alt.type} &bull; ${alt.baseRateType || "Repo-Linked"}</div>
           <div class="alt-metrics">
             <div class="alt-metric-item">
-              <span>Live APR</span>
+              <span>Verified APR</span>
               <strong>${alt.typicalAnnualRatePct}% p.a.</strong>
             </div>
             <div class="alt-metric-item">
@@ -442,7 +442,7 @@ const UI = {
     const { searchedPrincipal, tenureMonths, offers, rbiRepoRate } = data;
 
     if (countEl) {
-      countEl.innerHTML = `Found <strong>${offers.length} live bank loan offers</strong> for <strong>${this.formatCurrency(searchedPrincipal)}</strong> over <strong>${tenureMonths} months</strong> (RBI Repo Rate: ${rbiRepoRate}%):`;
+      countEl.innerHTML = `Found <strong>${offers.length} verified bank loan offers</strong> for <strong>${this.formatCurrency(searchedPrincipal)}</strong> over <strong>${tenureMonths} months</strong> (RBI Repo Rate: ${rbiRepoRate}%):`;
     }
 
     grid.innerHTML = "";
@@ -482,7 +482,7 @@ const UI = {
 
           <div class="offer-rate-highlight">
             <div class="rate-stat-box">
-              <h5>Live Interest Rate</h5>
+              <h5>Verified Interest Rate</h5>
               <div class="rate-num">${offer.annualRatePct}% <span style="font-size: 0.8rem; font-weight: 500;">p.a.</span></div>
             </div>
             <div class="rate-stat-box">

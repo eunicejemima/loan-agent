@@ -159,7 +159,7 @@ async function executeLoanSearch() {
   if (searchBtn) searchBtn.disabled = true;
 
   try {
-    UI.showToast(`Searching live bank offers for ₹${amount.toLocaleString("en-IN")}...`, "info");
+    UI.showToast(`Searching verified bank offers for ₹${amount.toLocaleString("en-IN")}...`, "info");
     const data = await ApiService.searchLoans(amount, selectedTenure, selectedCategory);
     UI.renderBankSearchResults(data);
     UI.showToast(`Found ${data.offers.length} matching bank offers!`, "success");
@@ -395,7 +395,7 @@ async function startAnalysis() {
 
   const t1 = setTimeout(() => UI.showLoading(2, "Extracting loan terms with Gemini AI..."), 1200);
   const t2 = setTimeout(() => UI.showLoading(3, "Calculating True APR and Red Flags..."), 3500);
-  const t3 = setTimeout(() => UI.showLoading(4, "Matching Live Bank Alternatives & Savings..."), 5200);
+  const t3 = setTimeout(() => UI.showLoading(4, "Matching Verified Bank Alternatives & Savings..."), 5200);
 
   try {
     const results = await ApiService.analyzeLoan(fileToAnalyze);
@@ -406,7 +406,7 @@ async function startAnalysis() {
 
     UI.hideLoading();
     UI.renderResults(results);
-    UI.showToast("Loan analysis completed with live bank comparisons!", "success");
+    UI.showToast("Loan analysis completed with verified bank comparisons!", "success");
   } catch (err) {
     clearTimeout(t1);
     clearTimeout(t2);
